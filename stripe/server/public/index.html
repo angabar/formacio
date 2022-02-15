@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Stripe tutorial</title>
+    </head>
+    <body>
+        <button id="checkout-button">Checkouts</button>
+        <script>
+            const button = document.getElementById("checkout-button");
+
+            button.addEventListener("click", () => {
+                fetch("/create-checkout-session", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        items: [
+                            {
+                                id: 1,
+                                quantity: 3,
+                            },
+                            {
+                                id: 2,
+                                quantity: 1,
+                            },
+                        ],
+                    }),
+                })
+                    .then((response) => {
+                        if (response.ok) return response.json();
+                        return response
+                            .json()
+                            .then((json) => Promise.reject(json));
+                    })
+                    .then((url) => {
+                        console.log("url__ ", url);
+
+                        // window.location = url;
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            });
+        </script>
+    </body>
+</html>
