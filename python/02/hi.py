@@ -1,3 +1,6 @@
+from statistics import mode
+
+
 print("hello world")
 print(3 % 2)
 
@@ -156,3 +159,94 @@ print(dict2)
 print(dict2.keys())
 print(dict2.values())
 print(dict2.items())
+
+# TUPLAS
+
+# Son iguales que las listas, pero con la diferencia de que son inmutables, no
+# pueden modificarse en lugar de braquets se usan parentesis
+tupla_example = (1, 2, 3)
+print(type(tupla_example))
+
+# Las tuplas pueden redefinirse por completo como los strings
+tupla_example = ("aaa", 1)
+print(tupla_example)
+
+# Hay dos metodos en las tuplas que son interesantes, count (que cuenta el
+# numero de veces que se repite un elemento en una tupla) e index (que nos dice
+# el indice de un elemento en una tupla)
+print(tupla_example.count("aaa"))
+print(tupla_example.index("aaa"))
+
+# Podmeos acceder a los elemento por indice como en las listas
+print(tupla_example[1])
+
+# Lo que no podemos hacer con las tuplas es esto: tupla_example[0] = "bbb"
+
+# SETS
+# Los sets son listas desordenadas de elementos unicos
+my_set = set()
+
+# Usamos add para añadir elementos a un set
+my_set.add(1)
+
+print(my_set)
+
+# Tambien podemos definir los sets de esta forma, pero ojo con poner los
+# braquets vacio porque python puede considerarlo como un dicionario, si lo que
+# queremos es inicializarlo vacio, lo mejor es poner set()
+another_set = {1, 2, 3}
+print(another_set)
+
+# Un truco para eliminar duplicados es convertir la lista a un set como aqui
+my_list_2 = [1, 1, 1, 2, 2, 2, 3, 3]
+distinct_my_list_2 = set(my_list_2)
+print(distinct_my_list_2)
+
+# Booleans
+
+# La unica consideracion a tener en cuenta es que se ponen con la
+# primera letra en mayuscula
+
+# I/O
+
+# Si el archivo no existe open nos devuelve un error
+myfile = open("test.txt")
+
+# Con read podemos leer el archivo que cargamos previamente
+print(myfile.read())
+
+# Si intentamos volverlo a leer nos dará un string vacío porque el cursor está
+# al final del archivo y hay que volverlo a poner al principio para que vuelva a
+# leerse, esto se hace con el metodo seek
+print(myfile.read())
+
+myfile.seek(0)
+
+# Uno de los metodos mas utiles es el de readlines, el cual nos permite
+# introducir cada linea dentro de un array para poder tener mejor acceso a estas
+content_file = myfile.readlines()
+print(content_file)
+
+# Lo ideal es que cuando terminemos de realizar las operaciones pertinentes con
+# los archivos, lo cerremos
+myfile.close()
+
+# Existe una forma mas moderna y segura de acceder a los contenidos de un
+# archivo, usando with, con esto cerramos el archivo directamente, es como
+# abrirlo, realizar las operaciones que queramos y cerrarlo todo en este bloque
+with open("test.txt") as my_other_file:
+    content_file = my_other_file.read()
+
+print(content_file)
+
+# Si lo que queremos es escribir tenemos que usar el segundo parametro de la
+# funcion open y especificar "a" de append el cual nos envia el cursor al final
+# del texto para escribir
+with open("test.txt", mode="a") as my_other_file:
+    content_file = my_other_file.write("\njajajaja")
+
+# Si lo que queremos es crear un archivo y / o sobreescribir uno existente,
+# tenemos que usar el modo "w" de write, en este caso, si ponemos un nombre de
+# archivo que no existe python lo creara
+with open("logs.txt", mode="w") as logs_file:
+    logs_file.write("my log jajajaja")
