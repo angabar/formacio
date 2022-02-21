@@ -165,5 +165,26 @@ random_number = randint(0, 100)
 print(random_number)
 
 # input siempre devuelve un string, ojo con las operaciones matematicas
-number_user = input("enter a number")
-print("number", number_user)
+# number_user = input("enter a number")
+# print("number", number_user)
+
+my_string = "hello"
+
+# Esta forma de construir los arrays se llama list comprehension
+my_update_string = [letter for letter in my_string]
+print(my_update_string)
+
+# Podmeos manipular la varibale directamente de esta forma
+print([x * 2 for x in range(0, 90)])
+
+# En el cado de que necesitemos definir un if, lo podemos poner en ultima
+# instacia
+print([x for x in range(0, 11) if x % 2 == 0])
+
+# No obstante, en el caso de que tengamos que definir un else tambien, el orden
+# cambiara y estos se definiran al principio (no recomendable por legibilidad)
+print([x if x % 2 == 0 else 'ODD' for x in range(0, 100)])
+
+# En el caso de tener que deifinir dos bucles anidados, lo que tenemos que hacer
+# es definir estos uno al lado del otro
+print([x * y for x in [2, 4, 6] for y in [1, 2, 3]])
