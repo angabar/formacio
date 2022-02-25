@@ -72,3 +72,65 @@ def has_33(number_list):
 print(has_33([1, 3, 3]))
 print(has_33([1, 3, 1, 3]))
 print(has_33([3, 1, 3]))
+
+
+def paper_doll(text):
+    new_text = []
+    for letter in text:
+        for _ in range(0, 3):
+            new_text.append(letter)
+    return "".join(new_text)
+
+
+print(paper_doll('Hello'))
+print(paper_doll('Mississippi'))
+
+
+def blackjack(*args):
+    if sum(args) <= 21:
+        return sum(args)
+    if sum(args) > 21 and 11 in args:
+        return sum(args) - 10
+    else:
+        return "BUST"
+
+
+print(blackjack(5, 6, 7))
+print(blackjack(9, 9, 9))
+print(blackjack(9, 9, 11))
+
+
+def summer_69(number_list):
+    can_sum = True
+    sum = 0
+    for num in number_list:
+        if num == 6:
+            can_sum = False
+        if num == 9:
+            can_sum = True
+            continue
+        if can_sum:
+            sum = sum + num
+    return sum
+
+
+print(summer_69([1, 3, 5]))
+print(summer_69([4, 5, 6, 7, 8, 9]))
+print(summer_69([2, 1, 6, 9, 11]))
+
+
+def spy_game(nums):
+    final_nums = []
+    for num in nums:
+        if num == 0 and len(final_nums) == 0:
+            final_nums.append(num)
+        if num == 0 and final_nums[0] == 0 and not final_nums[1]:
+            final_nums.append(num)
+        if num == 7 and final_nums[0] == 0 and final_nums[1] == 0:
+            final_nums.append(num)
+    return final_nums
+
+
+print(spy_game([1, 2, 4, 0, 0, 7, 5]))
+print(spy_game([1, 0, 2, 4, 0, 5, 7]))
+print(spy_game([1, 7, 2, 0, 4, 5, 0]))
