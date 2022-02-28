@@ -64,7 +64,7 @@ print(almost_there(209))
 def has_33(number_list):
     condition = False
     for index in range(len(number_list)):
-        if index > 0 and number_list[index - 1] == number_list[index]:
+        if index > 0 and number_list[index - 1] == number_list[index] and number_list[index] == 3:
             condition = True
     return condition
 
@@ -120,15 +120,13 @@ print(summer_69([2, 1, 6, 9, 11]))
 
 
 def spy_game(nums):
-    final_nums = []
+    count = 0
     for num in nums:
-        if num == 0 and len(final_nums) == 0:
-            final_nums.append(num)
-        if num == 0 and final_nums[0] == 0 and not final_nums[1]:
-            final_nums.append(num)
-        if num == 7 and final_nums[0] == 0 and final_nums[1] == 0:
-            final_nums.append(num)
-    return final_nums
+        if num == 0:
+            count = count + 1
+        if num == 7 and count == 2:
+            count = count + 1
+    return count == 3
 
 
 print(spy_game([1, 2, 4, 0, 0, 7, 5]))
