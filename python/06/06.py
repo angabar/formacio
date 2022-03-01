@@ -1,4 +1,5 @@
 from random import shuffle
+from re import X
 
 
 # FUNCTIONS
@@ -142,3 +143,35 @@ def testfunc(myvalue):
 # Cuidado, acceder a una propiedad asociativa tenemos que asegurarnos de que la
 # key existe en la funcion o tendremos un error
 testfunc(myvalue="test")
+
+
+# MAP AND FILTER
+def add_two(number):
+    return number + 2
+
+
+# Las funciones map o filter permiten actuar sobre elementos de manera
+# individual, reciben la función y el listado sobre el que tienen que actuar. Es
+# importante tener en cuenta que para poder iterar sobre el resultado debemos
+# convertirlo en una lista, ya que por defecto, map o filter devuelven
+# direcciones de memoria
+print(list(map(add_two, [1, 2, 3, 4])))
+
+
+# LAMBDA EXPRESION
+print(list(map(lambda num: num + 2, [1, 2, 3, 4])))
+
+
+# El scope de las variables sigue la regla LEGB, local, variables de afuera de
+# las funciones, globales, built in
+x = 50
+
+
+def my_func(x):
+    # La sentencia global nos permite tener acceso a la variable global dentro
+    # de la funcion, a partir de esta linea todas las reasignaciones de x se
+    # haran sobre la variable global, no se recomienda
+    global x
+
+    x = "abc"
+    print(x)
