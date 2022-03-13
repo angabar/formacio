@@ -119,4 +119,35 @@ class Animal():
 
 
 my_second_animal = Animal(name="placa")
-print(my_second_animal.speak())
+# print(my_second_animal.speak())
+
+# SPECIAL METHODS: Los special methods son aquellos metodos llamados cuando
+# realizamos operaciones genericas sobre nuestros objetos, como print, len o del
+
+
+class Book():
+    def __init__(self, title, author, pages):
+        self.title = title
+        self.author = author
+        self.pages = pages
+
+    # str es llamada cuando usamos print sobre la clase
+    def __str__(self):
+        return f"{self.title} by {self.author}"
+
+    # len es llamdo cuando usamos len sobre la clase
+    def __len__(self):
+        return self.pages
+
+    # del es llamdo cuando usamos del sobre la clase
+    def __del__(self):
+        print("A book object has been deleted")
+
+
+my_book = Book(title="test", author="Jose", pages=1)
+print(my_book)
+print(len(my_book))
+
+# Con del podemos borrar un objeto instanciado, pero ademas, una variable, un
+# set etc...
+del my_book
