@@ -22,9 +22,8 @@ class Player:
         else:
             self.__all_cards.append(new_cards)
 
+    def get_all_cards(self) -> List[Card]:
+        return self.__all_cards
+
     def __str__(self) -> str:
         return f"Player {self.__name} has {len(self.__all_cards)} cards"
-
-
-new_player = Player(name="Jose")
-print(new_player)
