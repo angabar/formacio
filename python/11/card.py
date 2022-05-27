@@ -19,12 +19,8 @@ class Card:
         self.__rank = rank
         self.__value = values[rank]
 
+    def get_card_value(self) -> str:
+        return self.__value
+
     def __str__(self) -> str:
         return f"{self.__rank} of {self.__suit}"
-
-
-two_hearts = Card(suit="Hearts", rank="Two")
-print(two_hearts)
-
-three_of_clubs = Card(suit="Clubs", rank="Three")
-print(three_of_clubs)

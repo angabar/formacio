@@ -20,8 +20,3 @@ class Deck:
 
     def get_all_cards(self) -> List[Card]:
         return self.__all_cards
-
-
-new_deck = Deck()
-new_deck.shuffle()
-print(new_deck.deal_one())
