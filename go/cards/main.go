@@ -1,13 +1,7 @@
 package main
 
-import "fmt"
-
 func main() {
-	card := newCard()
+	cards := newDeck()
 
-	fmt.Println(card)
-}
-
-func newCard() string {
-	return "Ace of Spades"
+	cards.printDeck()
 }
