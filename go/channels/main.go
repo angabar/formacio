@@ -20,8 +20,12 @@ func main() {
 		go checkLink(link, c)
 	}
 
-	for i := 0; i < len(links); i++ {
-		fmt.Println(<-c)
+	/* for i := 0; i < len(links); i++ {
+		go checkLink(<-c, c)
+	} */
+
+	for {
+		go checkLink(<-c, c)
 	}
 }
 
@@ -30,12 +34,12 @@ func checkLink(link string, c chan string) {
 
 	if err != nil {
 		fmt.Println(link, "might be down")
-		c <- "Might be down"
+		c <- link
 		return
 	}
 
-	c <- "Is up"
 	fmt.Println(link, "is up")
+	c <- link
 }
 
 // Una go rutine es un proceso de ejecucion de un programa linea a linea, la mas
@@ -84,3 +88,9 @@ func checkLink(link string, c chan string) {
 
 // Print puede acceder a los mensajes sin necesidad de guardarlos antes en una
 // variable fmt.Println(<-c)
+
+// Otro punto a tener en cuenta de los canales, es que en el momento en que el
+// main routine reciba una respuesta de un canal pasara a la siguiente linea de
+// comando, por lo que si tenemos un ejemplo como el anterior en que tenemos
+// cinco vinculos, deberemos preparar cinco metodos a la espera de recibir una
+// respuesta de un canal, sino solo se tendra el cuenta el primero
