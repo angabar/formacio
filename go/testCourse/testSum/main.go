@@ -7,12 +7,12 @@ import (
 )
 
 func main() {
-	sum := utils.Sum([]int{1, 2, 3})
 
-	fmt.Println(sum)
-
-	/* if sum != 6 {
-		panic("FAIL: Want 6 but got" + sum)
+	add := utils.Add(5, 10)
+	fmt.Println(add)
+	/* if add != 15 {
+		msg := fmt.Sprintf("Fail: Wanted 15 but got %d", sum)
+		panic(msg)
 	} */
 
 	fmt.Println("PASS")
