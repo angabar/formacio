@@ -169,3 +169,30 @@ func TestHandler(t *testing.T) {
     }
 }
 ```
+
+### Mensajes de error útiles
+
+Debemos intentar que los mensajes de error que escribamos sean útiles, en el siguiente código de ejemplo tenemos el nombre de la función, el argumento que se le pasa, lo que devuelve y lo que se espera que devuelva.
+
+Esta forma sigue la recomendación oficial, así que procura usarla siempre que puedas.
+
+```go
+t.Errorf("SomeFunc(%v) err = %v; want %v")
+```
+
+Usa los tipos se conversión de `string` más adecuados para el test que estás preparando. Quizás te interese más un `%d` que un `%v`
+
+### Ejemplos en la documentación
+
+Podemos crear ejemplos de los métodos y variables usando nuestros archivos de tests, tan solo tenemos que poner como nombre `Example` en la declaración de los mismos.
+
+```go
+func ExampleHello() {
+	greeting := Hello("test")
+	fmt.Println(greeting)
+
+	// Output: Hello test
+}
+```
+
+Para generar los documentos tenemos que lanzar el siguiente comando `godoc -http=:8000` este nos permitirá tener acceso no solo a la documentación oficial de Go, sino también a la documentación que nosotros hayamos creado.
