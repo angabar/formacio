@@ -1,4 +1,4 @@
-package main
+package example
 
 import "fmt"
 
@@ -9,7 +9,7 @@ func Hello(name string) string {
 func Page(checkIns map[string]bool) {
 	for name, checkIn := range checkIns {
 		if !checkIn {
-			fmt.Printf("Paging %s; Please see the front", name)
+			fmt.Printf("Paging %s; Please see the front\n", name)
 		}
 	}
 }

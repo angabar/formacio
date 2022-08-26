@@ -83,13 +83,13 @@ func TestHandler(t *testing.T) {
 
 `Fail` hará que el test falle pero continue con la ejecución del código, mientras que `FailNow` hará que el test falle y se detenga la ejecución del código.
 
-`Fatal` `Fatalf`
-
-`Fatal` es la combinación de `Log` y `FailNow` mientras que `Fatalf` es la combinación de `Logf` y `FailNow`
-
 `Error` `Errorf`
 
 `Error` es la combinación de `Log` y `Fail` mientras que `Errorf` es la combinación de `Logf` y `Fail`
+
+`Fatal` `Fatalf`
+
+`Fatal` es la combinación de `Log` y `FailNow` mientras que `Fatalf` es la combinación de `Logf` y `FailNow`
 
 Cuando usar uno u otro depende de si queremos continuar la ejecución del test para obtener más información, o no es necesario continuar el test pues no vamos a obtener más información.
 
