@@ -38,12 +38,15 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            currentQuestion.text,
-            textAlign: TextAlign.center,
-            style: GoogleFonts.lato(
-              color: Colors.white,
-              fontSize: 24,
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 40),
+            child: Text(
+              currentQuestion.text,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.lato(
+                color: Colors.white,
+                fontSize: 24,
+              ),
             ),
           ),
           Container(
