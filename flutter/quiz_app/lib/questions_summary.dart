@@ -10,22 +10,29 @@ class QuestionsSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: selectedAnswers.map((singleSelectedAnswer) {
-        return Row(
-          children: [
-            Text(singleSelectedAnswer['question_index'].toString()),
-            Column(
+    return SizedBox(
+      height: 300,
+      child: SingleChildScrollView(
+        child: Column(
+          children: selectedAnswers.map((singleSelectedAnswer) {
+            return Row(
               children: [
-                Text(singleSelectedAnswer['question'].toString()),
-                const SizedBox(height: 5),
-                Text(singleSelectedAnswer['user_answer'].toString()),
-                Text(singleSelectedAnswer['correct_answer'].toString()),
+                Text(singleSelectedAnswer['question_index'].toString()),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Text(singleSelectedAnswer['question'].toString()),
+                      const SizedBox(height: 5),
+                      Text(singleSelectedAnswer['user_answer'].toString()),
+                      Text(singleSelectedAnswer['correct_answer'].toString()),
+                    ],
+                  ),
+                ),
               ],
-            ),
-          ],
-        );
-      }).toList(),
+            );
+          }).toList(),
+        ),
+      ),
     );
   }
 }
