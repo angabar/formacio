@@ -37,6 +37,10 @@ class _ExpensesState extends State<Expenses> {
 
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
+        // LESSON: useSafeArea se añade en el scaffold por defecto, hace que los
+        // elementos no solapen partes del dispositivo, como la camara o las
+        // notificaciones
+        useSafeArea: true,
         isScrollControlled: true,
         context: context,
         builder: (BuildContext modalContext) => NewExpense(
@@ -75,6 +79,8 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+
     Widget mainContent = const Center(
       child: Text('No expenses found.'),
     );
@@ -96,14 +102,33 @@ class _ExpensesState extends State<Expenses> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Chart(expenses: _registeredExpenses),
-          Expanded(
-            child: mainContent,
-          ),
-        ],
-      ),
+      body: width < 600
+          ? Column(
+              children: [
+                Chart(expenses: _registeredExpenses),
+                Expanded(
+                  child: mainContent,
+                ),
+              ],
+            )
+          : Row(
+              children: [
+                // LESSON: Algunos widgets como el Column o Row no especifican
+                // la altura o el ancho, esto quiere decir que ocuparan
+                // infinito, y esto es un problema porque si ponemos un widget
+                // hijo que tambien tenga esta propiedad, como un ListView por
+                // ejemplo, tendremos un problema ya que no se vera como toca,
+                // para solventar esto tenemos que usar Expanded, este lo que
+                // hace es eliminar esa propiedad de "infinitos" en los widgets
+                // que lo usan, para que pasen a usar solo el tamaño disponible
+                Expanded(
+                  child: Chart(expenses: _registeredExpenses),
+                ),
+                Expanded(
+                  child: mainContent,
+                ),
+              ],
+            ),
     );
   }
 }

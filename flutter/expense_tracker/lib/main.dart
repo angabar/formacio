@@ -10,6 +10,14 @@ ColorScheme kDarkColorScheme = ColorScheme.fromSeed(
 );
 
 void main() {
+  // LESSON: Esto es para determinar las orientaciones del dispositivo
+  // permitidas por la aplicacion
+
+  // WidgetsFlutterBinding.ensureInitialized();
+
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitUp,
+  // ]).then((function) {
   runApp(
     MaterialApp(
       darkTheme: ThemeData.dark().copyWith(
@@ -53,4 +61,5 @@ void main() {
       home: const Expenses(),
     ),
   );
+  // });
 }
