@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:expense_tracker/models/expense.dart';
 import 'package:flutter/material.dart';
 
@@ -51,6 +53,12 @@ class _NewExpenseState extends State<NewExpense> {
     if (_titleController.text.trim().isEmpty ||
         amountIsInvalid ||
         _pickedDate == null) {
+      // LESSON: La clase Platform nos permite saber si estamos en un sistema
+      // operativo o en otro
+
+      // Platform.isIOS
+      // showCupertinoDialog(context: context, builder: builder)
+
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
