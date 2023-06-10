@@ -9,13 +9,13 @@ class CategoryGridItem extends StatelessWidget {
   });
 
   final Category category;
-  final void Function(BuildContext context) onSelectCategory;
+  final void Function(BuildContext context, Category category) onSelectCategory;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        onSelectCategory(context);
+        onSelectCategory(context, category);
       },
       splashColor: Theme.of(context).primaryColor,
       borderRadius: BorderRadius.circular(16),
