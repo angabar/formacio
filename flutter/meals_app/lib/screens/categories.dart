@@ -31,9 +31,25 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   Map<Filter, bool> _selectedFilters = kInitialFilters;
 
   void _selectCategory(BuildContext context, Category category) {
-    List<Meal> categoryMeals = dummyMeals
-        .where((Meal meal) => meal.categories.contains(category.id))
-        .toList();
+    List<Meal> categoryMeals = dummyMeals.where((Meal meal) {
+      if (!meal.categories.contains(category.id)) {
+        return false;
+      }
+      if (_selectedFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
+        return false;
+      }
+      if (_selectedFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
+        return false;
+      }
+      if (_selectedFilters[Filter.vegetarian]! && !meal.isVegetarian) {
+        return false;
+      }
+      if (_selectedFilters[Filter.vegan]! && !meal.isVegan) {
+        return false;
+      }
+
+      return true;
+    }).toList();
 
     Navigator.push(
       context,
