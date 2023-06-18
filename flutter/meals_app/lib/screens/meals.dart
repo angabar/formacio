@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:meals_app/models/meal.dart';
+import 'package:meals_app/screens/filters.dart';
 import 'package:meals_app/screens/meal_details.dart';
+import 'package:meals_app/screens/tabs.dart';
 import 'package:meals_app/widgets/main_drawer.dart';
 import 'package:meals_app/widgets/meal_item.dart';
 
@@ -29,9 +31,22 @@ class MealsScreen extends StatelessWidget {
   }
 
   void _setScreen(BuildContext context, String identifier) {
+    Navigator.of(context).pop();
+
     if (identifier == 'filters') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const FiltersScreen(),
+        ),
+      );
     } else {
-      Navigator.of(context).pop();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const TabsScreen(),
+        ),
+      );
     }
   }
 
