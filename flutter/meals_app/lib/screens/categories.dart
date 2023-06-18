@@ -4,6 +4,7 @@ import 'package:meals_app/models/category.dart';
 import 'package:meals_app/models/meal.dart';
 import 'package:meals_app/screens/meals.dart';
 import 'package:meals_app/widgets/category_grid_item.dart';
+import 'package:meals_app/widgets/main_drawer.dart';
 
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({
@@ -30,12 +31,20 @@ class CategoriesScreen extends StatelessWidget {
     );
   }
 
+  void _setScreen(BuildContext context, String identifier) {
+    if (identifier == 'filters') {
+    } else {
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Pick your category'),
       ),
+      drawer: MainDrawer(onSelectScreen: _setScreen),
       body: GridView(
         padding: const EdgeInsets.all(24),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

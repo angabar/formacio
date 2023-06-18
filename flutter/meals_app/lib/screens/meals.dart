@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meals_app/models/meal.dart';
 import 'package:meals_app/screens/meal_details.dart';
+import 'package:meals_app/widgets/main_drawer.dart';
 import 'package:meals_app/widgets/meal_item.dart';
 
 class MealsScreen extends StatelessWidget {
@@ -25,6 +26,13 @@ class MealsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _setScreen(BuildContext context, String identifier) {
+    if (identifier == 'filters') {
+    } else {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -65,6 +73,9 @@ class MealsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
+      ),
+      drawer: MainDrawer(
+        onSelectScreen: _setScreen,
       ),
       body: bodyContent,
     );
