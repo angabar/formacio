@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals_app/models/meal.dart';
+import 'package:meals_app/providers/favorites_provider.dart';
 import 'package:meals_app/screens/categories.dart';
 import 'package:meals_app/screens/meals.dart';
 
-class TabsScreen extends StatefulWidget {
+class TabsScreen extends ConsumerStatefulWidget {
   const TabsScreen({super.key});
 
   @override
-  State<TabsScreen> createState() {
+  ConsumerState<TabsScreen> createState() {
     return _TabsScreenState();
   }
 }
 
-class _TabsScreenState extends State<TabsScreen> {
+class _TabsScreenState extends ConsumerState<TabsScreen> {
   int _selectedPageIndex = 0;
-  final List<Meal> _favouritesMeals = [];
 
   void _showInfoMessage(String message) {
     ScaffoldMessenger.of(context).clearSnackBars();
@@ -25,24 +26,6 @@ class _TabsScreenState extends State<TabsScreen> {
     );
   }
 
-  void _toggleMealFavouriteStatus(Meal meal) {
-    final isExisting = _favouritesMeals.contains(meal);
-
-    if (isExisting) {
-      setState(() {
-        _favouritesMeals.remove(meal);
-      });
-
-      _showInfoMessage('Meal is no longer a favourite');
-    } else {
-      setState(() {
-        _favouritesMeals.add(meal);
-      });
-
-      _showInfoMessage('Marked as favourite');
-    }
-  }
-
   void _selectpage(int index) {
     setState(() {
       _selectedPageIndex = index;
@@ -51,15 +34,14 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Widget activePage = CategoriesScreen(
-      onToggleFavourite: _toggleMealFavouriteStatus,
-    );
+    Widget activePage = const CategoriesScreen();
 
     if (_selectedPageIndex == 1) {
+      final favoriteMeals = ref.watch(favoriteMealsProvider);
+
       activePage = MealsScreen(
         title: 'Favourites',
-        meals: _favouritesMeals,
-        onToggleFavourite: _toggleMealFavouriteStatus,
+        meals: favoriteMeals,
       );
     }
 
