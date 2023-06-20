@@ -3,19 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals_app/data/dummy_data.dart';
 import 'package:meals_app/models/category.dart';
 import 'package:meals_app/models/meal.dart';
+import 'package:meals_app/providers/filters_provider.dart';
 import 'package:meals_app/providers/meals_provider.dart';
 import 'package:meals_app/screens/filters.dart';
 import 'package:meals_app/screens/meals.dart';
 import 'package:meals_app/screens/tabs.dart';
 import 'package:meals_app/widgets/category_grid_item.dart';
 import 'package:meals_app/widgets/main_drawer.dart';
-
-const kInitialFilters = {
-  Filter.glutenFree: false,
-  Filter.lactoseFree: false,
-  Filter.vegetarian: false,
-  Filter.vegan: false,
-};
 
 class CategoriesScreen extends ConsumerStatefulWidget {
   const CategoriesScreen({
@@ -27,25 +21,24 @@ class CategoriesScreen extends ConsumerStatefulWidget {
 }
 
 class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
-  Map<Filter, bool> _selectedFilters = kInitialFilters;
-
   void _selectCategory(BuildContext context, Category category) {
     final List<Meal> meals = ref.watch(mealsProvider);
+    final Map<Filter, bool> activeFilters = ref.watch(filtersProvider);
 
     List<Meal> categoryMeals = meals.where((Meal meal) {
       if (!meal.categories.contains(category.id)) {
         return false;
       }
-      if (_selectedFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
+      if (activeFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
         return false;
       }
-      if (_selectedFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
+      if (activeFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
         return false;
       }
-      if (_selectedFilters[Filter.vegetarian]! && !meal.isVegetarian) {
+      if (activeFilters[Filter.vegetarian]! && !meal.isVegetarian) {
         return false;
       }
-      if (_selectedFilters[Filter.vegan]! && !meal.isVegan) {
+      if (activeFilters[Filter.vegan]! && !meal.isVegan) {
         return false;
       }
 
@@ -68,16 +61,19 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
 
     if (identifier == 'filters') {
       // Aqui se guardara lo que se envie desde los filtros al hacer el pop
-      final result = await Navigator.push<Map<Filter, bool>>(
+      // final result = await Navigator.push<Map<Filter, bool>>(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => const FiltersScreen(),
+      //   ),
+      // );
+
+      Navigator.push<Map<Filter, bool>>(
         context,
         MaterialPageRoute(
           builder: (context) => const FiltersScreen(),
         ),
       );
-
-      setState(() {
-        _selectedFilters = result ?? kInitialFilters;
-      });
     } else {
       Navigator.push(
         context,
