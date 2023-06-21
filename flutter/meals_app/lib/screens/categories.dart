@@ -20,7 +20,34 @@ class CategoriesScreen extends ConsumerStatefulWidget {
   ConsumerState<CategoriesScreen> createState() => _CategoriesScreenState();
 }
 
-class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
+class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
+    with SingleTickerProviderStateMixin {
+  // LESSON: late determina que la variable tendra un valor definido en el
+  // momento de utilizarse, pero no en el momento de declararse
+  late AnimationController _animationController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+      lowerBound: 0,
+      upperBound: 1,
+    );
+
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    // LESSON: Todos los controladores de animaciones deben cerrarse al terminar
+    // el widget
+    _animationController.dispose();
+    super.dispose();
+  }
+
   void _selectCategory(BuildContext context, Category category) {
     final List<Meal> meals = ref.watch(mealsProvider);
     final Map<Filter, bool> activeFilters = ref.watch(filtersProvider);
@@ -91,21 +118,30 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
         title: const Text('Pick your category'),
       ),
       drawer: MainDrawer(onSelectScreen: _setScreen),
-      body: GridView(
-        padding: const EdgeInsets.all(24),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 3 / 2,
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 20,
+      body: AnimatedBuilder(
+        animation: _animationController,
+        child: GridView(
+          padding: const EdgeInsets.all(24),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 3 / 2,
+            crossAxisSpacing: 20,
+            mainAxisSpacing: 20,
+          ),
+          children: [
+            for (final category in availableCategories)
+              CategoryGridItem(
+                category: category,
+                onSelectCategory: _selectCategory,
+              ),
+          ],
         ),
-        children: [
-          for (final category in availableCategories)
-            CategoryGridItem(
-              category: category,
-              onSelectCategory: _selectCategory,
-            ),
-        ],
+        builder: (BuildContext context, Widget? child) => Padding(
+          padding: EdgeInsets.only(
+            top: 100 - _animationController.value * 100,
+          ),
+          child: child,
+        ),
       ),
     );
   }
