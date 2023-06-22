@@ -136,9 +136,15 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
               ),
           ],
         ),
-        builder: (BuildContext context, Widget? child) => Padding(
-          padding: EdgeInsets.only(
-            top: 100 - _animationController.value * 100,
+        builder: (BuildContext context, Widget? child) => SlideTransition(
+          position: Tween(
+            begin: const Offset(0, 0.3),
+            end: const Offset(0, 0),
+          ).animate(
+            CurvedAnimation(
+              parent: _animationController,
+              curve: Curves.easeInOut,
+            ),
           ),
           child: child,
         ),
