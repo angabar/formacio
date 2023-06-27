@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shopping_list/data/categories.dart';
 import 'package:shopping_list/models/category.dart';
-import 'package:shopping_list/models/grocery_item.dart';
+
+import 'package:http/http.dart' as http;
 
 class NewItem extends StatefulWidget {
   const NewItem({super.key});
@@ -19,16 +22,34 @@ class _NewItemState extends State<NewItem> {
   int _enteredQuantity = 1;
   Category _selectedCategory = categories[Categories.vegetables]!;
 
-  void _saveItem() {
+  void _saveItem() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      Navigator.of(context).pop(
-        GroceryItem(
-            id: DateTime.now().toString(),
-            name: _enteredName,
-            quantity: _enteredQuantity,
-            category: _selectedCategory),
+
+      final Uri url = Uri.https(
+        'shopping-list-back-default-rtdb.firebaseio.com',
+        'shopping-list.json',
       );
+      await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode(
+          {
+            'name': _enteredName,
+            'quantity': _enteredQuantity,
+            'category': _selectedCategory.title,
+          },
+        ),
+      );
+
+      // LESSON: No debemos hacer pop despues de un await porque quizas el
+      // contexto de la aplicación ha cambiado, si queremos hacer un pop despues
+      // de un await hay que comprobar que el contexto es el mismo con
+      // context.mount
+      if (!context.mounted) return;
+      Navigator.of(context).pop();
     }
   }
 
