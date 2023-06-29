@@ -21,9 +21,13 @@ class _NewItemState extends State<NewItem> {
   String _enteredName = '';
   int _enteredQuantity = 1;
   Category _selectedCategory = categories[Categories.vegetables]!;
+  bool _isLoading = false;
 
   void _saveItem() async {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
       _formKey.currentState!.save();
 
       final Uri url = Uri.https(
@@ -43,6 +47,10 @@ class _NewItemState extends State<NewItem> {
           },
         ),
       );
+
+      setState(() {
+        _isLoading = false;
+      });
 
       // LESSON: No debemos hacer pop despues de un await porque quizas el
       // contexto de la aplicación ha cambiado, si queremos hacer un pop despues
@@ -147,15 +155,23 @@ class _NewItemState extends State<NewItem> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    onPressed: () {
-                      _formKey.currentState!.reset();
-                    },
+                    onPressed: _isLoading
+                        ? null
+                        : () {
+                            _formKey.currentState!.reset();
+                          },
                     child: const Text('Reset'),
                   ),
                   const SizedBox(width: 12),
                   ElevatedButton(
-                    onPressed: _saveItem,
-                    child: const Text('Add item'),
+                    onPressed: _isLoading ? null : _saveItem,
+                    child: _isLoading
+                        ? const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(),
+                          )
+                        : const Text('Add item'),
                   )
                 ],
               ),

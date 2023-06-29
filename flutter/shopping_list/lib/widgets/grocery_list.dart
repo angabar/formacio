@@ -16,6 +16,8 @@ class GroceryList extends StatefulWidget {
 
 class _GroceryListState extends State<GroceryList> {
   List<GroceryItem> _groceryItems = [];
+  bool _isLoading = true;
+  bool _error = false;
 
   @override
   void initState() {
@@ -31,13 +33,19 @@ class _GroceryListState extends State<GroceryList> {
     final response = await http.get(url);
     final Map<String, dynamic> listData = json.decode(response.body);
 
-    final List<GroceryItem> _loadedItems = [];
+    if (response.statusCode >= 400) {
+      setState(() {
+        _error = true;
+      });
+    }
+
+    final List<GroceryItem> loadedItems = [];
     for (final item in listData.entries) {
       final category = categories.entries
           .firstWhere((categoryItem) =>
               categoryItem.value.title == item.value['category'])
           .value;
-      _loadedItems.add(
+      loadedItems.add(
         GroceryItem(
           id: item.key,
           name: item.value['name'],
@@ -48,7 +56,8 @@ class _GroceryListState extends State<GroceryList> {
     }
 
     setState(() {
-      _groceryItems = _loadedItems;
+      _groceryItems = loadedItems;
+      _isLoading = false;
     });
   }
 
@@ -63,10 +72,24 @@ class _GroceryListState extends State<GroceryList> {
     _loadItems();
   }
 
-  void _removeItem(GroceryItem itemToRemove) {
+  void _removeItem(GroceryItem itemToRemove) async {
+    final int indexToRecovery = _groceryItems.indexOf(itemToRemove);
     setState(() {
       _groceryItems.remove(itemToRemove);
     });
+
+    final url = Uri.https(
+      'shopping-list-back-default-rtdb.firebaseio.com',
+      'shopping-list/${itemToRemove.id}.json',
+    );
+
+    final response = await http.delete(url);
+
+    if (response.statusCode >= 400) {
+      setState(() {
+        _groceryItems.insert(indexToRecovery, itemToRemove);
+      });
+    }
   }
 
   @override
@@ -74,6 +97,18 @@ class _GroceryListState extends State<GroceryList> {
     Widget content = const Center(
       child: Text('Not items added yet'),
     );
+
+    if (_isLoading) {
+      content = const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    if (_error) {
+      content = const Center(
+        child: Text('An error occur :('),
+      );
+    }
 
     if (_groceryItems.isNotEmpty) {
       content = ListView.builder(
