@@ -33,3 +33,20 @@ func getUserData(promptText string) string {
 	fmt.Scanln(&value)
 	return value
 }
+
+/*
+
+Los metodos tambien pueden asignarse a los tipos custom
+
+type str string
+
+func (text str) log() {
+	fmt.Println(text)
+}
+
+...
+
+name := "Max"
+name.log()
+
+*/
