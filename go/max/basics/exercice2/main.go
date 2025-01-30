@@ -1,21 +1,54 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"strings"
 
 	"example.com/note"
+	"example.com/todo"
 )
 
 func main() {
 	title, content := getNoteData()
+	todoText := getUserInput("Todo text: ")
+
+	todo, err := todo.New(todoText)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	userNote, err := note.New(title, content)
 
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
 
+	// todo
+	todo.Display()
+	err = todo.Save()
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("Saving the todo succeeded!")
+
+	// note
 	userNote.Display()
+	err = userNote.Save()
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("Saving the note succeeded!")
 }
 
 func getNoteData() (string, string) {
@@ -27,8 +60,16 @@ func getNoteData() (string, string) {
 
 func getUserInput(prompt string) string {
 	fmt.Print(prompt)
-	var input string
-	fmt.Scanln(&input)
+
+	reader := bufio.NewReader(os.Stdin)
+	input, err := reader.ReadString('\n')
+
+	if err != nil {
+		return ""
+	}
+
+	input = strings.TrimSuffix(input, "\n")
+	input = strings.TrimSuffix(input, "\r")
 
 	return input
 }
