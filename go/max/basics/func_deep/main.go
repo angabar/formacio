@@ -3,20 +3,19 @@ package main
 import "fmt"
 
 func main() {
-	fac := factorial(5)
+	numbers := []int{1, 2, 3}
 
-	fmt.Println(fac)
+	sum := sumup(numbers...)
+
+	fmt.Println(sum)
 }
 
-func factorial(number int) int {
-	resutl := 1
+func sumup(numbers ...int) int {
+	sum := 0
 
-	for i := 1; i <= number; i++ {
-		resutl = resutl * i
+	for _, value := range numbers {
+		sum += value
 	}
 
-	return resutl
+	return sum
 }
-
-recursive
-2:56
