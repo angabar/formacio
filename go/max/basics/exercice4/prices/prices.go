@@ -1,21 +1,49 @@
 package prices
 
-import "fmt"
+import (
+	"fmt"
+
+	"example.com/conversion"
+	"example.com/filemanager"
+)
 
 type TaxIncludedPriceJob struct {
 	TaxRate           float64
 	InputPrices       []float64
-	TaxIncludedPrices map[string]float64
+	TaxIncludedPrices map[string]string
+}
+
+func (job *TaxIncludedPriceJob) LoadData() {
+	lines, error := filemanager.ReadLines("prices.txt")
+
+	if error != nil {
+		fmt.Println(error)
+		return
+	}
+
+	prices, error := conversion.StringsToFloat(lines)
+
+	if error != nil {
+		fmt.Println(error)
+		return
+	}
+
+	job.InputPrices = prices
 }
 
 func (job *TaxIncludedPriceJob) Process() {
-	result := make(map[string]float64)
+	job.LoadData()
+
+	result := make(map[string]string)
 
 	for _, price := range job.InputPrices {
-		result[fmt.Sprintf("%.2f", price)] = price * (1 + job.TaxRate)
+		taxIncludedPrice := price * (1 + job.TaxRate)
+
+		result[fmt.Sprintf("%.2f", price)] = fmt.Sprintf("%.2f", taxIncludedPrice)
 	}
 
-	fmt.Println(result)
+	job.TaxIncludedPrices = result
+	filemanager.WriteJSON(fmt.Sprintf("result_%.0f.json", job.TaxRate*100), job)
 }
 
 func NewTaxIncludedPriceJob(taxRate float64) *TaxIncludedPriceJob {
