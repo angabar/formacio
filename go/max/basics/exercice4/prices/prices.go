@@ -7,14 +7,16 @@ import (
 	"example.com/filemanager"
 )
 
+// Para excluir un valor de un json tenemos que usar "-"
 type TaxIncludedPriceJob struct {
-	TaxRate           float64
-	InputPrices       []float64
-	TaxIncludedPrices map[string]string
+	IOManager         *filemanager.FileManager `json:"-"`
+	TaxRate           float64                  `json:"tag_rate"`
+	InputPrices       []float64                `json:"input_prices"`
+	TaxIncludedPrices map[string]string        `json:"tax_included_prices"`
 }
 
 func (job *TaxIncludedPriceJob) LoadData() {
-	lines, error := filemanager.ReadLines("prices.txt")
+	lines, error := job.IOManager.ReadLines()
 
 	if error != nil {
 		fmt.Println(error)
@@ -43,11 +45,12 @@ func (job *TaxIncludedPriceJob) Process() {
 	}
 
 	job.TaxIncludedPrices = result
-	filemanager.WriteJSON(fmt.Sprintf("result_%.0f.json", job.TaxRate*100), job)
+	job.IOManager.WriteResult(job)
 }
 
-func NewTaxIncludedPriceJob(taxRate float64) *TaxIncludedPriceJob {
+func NewTaxIncludedPriceJob(fm *filemanager.FileManager, taxRate float64) *TaxIncludedPriceJob {
 	return &TaxIncludedPriceJob{
+		IOManager:   fm,
 		InputPrices: []float64{10, 20, 30},
 		TaxRate:     taxRate,
 	}
