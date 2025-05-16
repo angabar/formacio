@@ -9,15 +9,33 @@ import (
 
 func main() {
 	taxRates := []float64{0, 0.07, 0.1, 0.15}
+	doneChans := make([]chan bool, len((taxRates)))
+	errorChans := make([]chan error, len((taxRates)))
 
-	for _, taxRate := range taxRates {
+	for index, taxRate := range taxRates {
+		doneChans[index] = make(chan bool)
+		errorChans[index] = make(chan error)
 		fm := filemanager.New("prices.txt", fmt.Sprintf("result_%.0f.json", taxRate*100))
 		// cmdm := cmdmanager.New()
 		priceJob := prices.NewTaxIncludedPriceJob(fm, taxRate)
-		error := priceJob.Process()
+		go priceJob.Process(doneChans[index], errorChans[index])
 
-		if error != nil {
-			fmt.Println(error)
+		// if error != nil {
+		// 	fmt.Println(error)
+		// }
+	}
+
+	for index := range taxRates {
+		// Cuando tenemos la opcion de que pueda entrar informacion en
+		// diferentes canales a la vez tenemos que usar el select para controlar
+		// si entra en uno o en otro
+		select {
+		case error := <-errorChans[index]:
+			if error != nil {
+				fmt.Println(error)
+			}
+		case <-doneChans[index]:
+			fmt.Println("done")
 		}
 	}
 }

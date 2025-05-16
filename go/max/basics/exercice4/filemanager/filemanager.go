@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"os"
+	"time"
 )
 
 type FileManager struct {
@@ -18,6 +19,10 @@ func (fm *FileManager) ReadLines() ([]string, error) {
 	if error != nil {
 		return nil, errors.New("an error ocurred opening the file")
 	}
+
+	// defer nos permite ejecutar un bloque de codigo cuando la ejecucion de la
+	// funcion que lo engloba termine
+	defer file.Close()
 
 	// NewScanner nos permite leer el documento
 	scanner := bufio.NewScanner(file)
@@ -35,11 +40,9 @@ func (fm *FileManager) ReadLines() ([]string, error) {
 	error = scanner.Err()
 
 	if error != nil {
-		file.Close()
 		return nil, errors.New("an error ocurred reading the file content")
 	}
 
-	file.Close()
 	return lines, nil
 }
 
@@ -50,15 +53,20 @@ func (fm *FileManager) WriteResult(data any) error {
 		return errors.New("failed to create file")
 	}
 
+	defer file.Close()
+
+	// Si hacemos que esepere 3 segundos en cada archivo el total seran 12
+	// porque pasa por 4 archivos diferentes, un punto perfecto para usar
+	// rutinas
+	time.Sleep(3 * time.Second)
+
 	encoder := json.NewEncoder(file)
 	error = encoder.Encode(data)
 
 	if error != nil {
-		file.Close()
 		return errors.New("failed to encode json")
 	}
 
-	file.Close()
 	return nil
 }
 
