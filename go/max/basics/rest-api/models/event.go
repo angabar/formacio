@@ -14,8 +14,12 @@ type Event struct {
 var events []Event
 
 func (e *Event) Save() {
-	// later: added to a database
-
+	query := `
+		INSERT INTO events
+			(name, description, location, datTime, user_id)
+		VALUES
+			()
+	`
 	events = append(events, *e)
 }
 
