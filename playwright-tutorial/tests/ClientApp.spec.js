@@ -1,4 +1,4 @@
-import test, { expect } from "@playwright/test";
+import test from "@playwright/test";
 
 test("Page test", async ({ page }) => {
     await page.goto("https://rahulshettyacademy.com/client");
