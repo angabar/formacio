@@ -1,9 +1,11 @@
-import test from "@playwright/test";
+import test, { expect } from "@playwright/test";
 
 test("Calendar validations", async ({ page }) => {
     const day = "15";
     const month = "6";
     const year = "2027";
+
+    const expectedList = [month, day, year];
 
     await page.goto("https://rahulshettyacademy.com/seleniumPractise/#/offers");
 
@@ -17,5 +19,13 @@ test("Calendar validations", async ({ page }) => {
         .click();
     await page.locator("//abbr[text()='" + day + "']").click();
 
-    await page.pause();
+    const inputs = page.locator(".react-date-picker__inputGroup input");
+
+    for (let index = 0; index < inputs.length; index++) {
+        const input = inputs[index];
+
+        const inputValue = input.getAttribute("value");
+
+        expect(inputValue).toEqual(expectedList[index]);
+    }
 });

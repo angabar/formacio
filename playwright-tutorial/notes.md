@@ -170,7 +170,15 @@ await page.locator("div li").waitFor();
 const isVisible = await page.locator("h3:has-text('ZARA COAT 3')").isVisible();
 ```
 
-## `getByLabel`
+De manera contraria, si lo que queremos es comprobar que el elemento no es visible, usaremos el método `isHidden`
+
+```js
+await expect(page.locator("#displayed-text")).toBeVisible();
+await page.locator("#hide-textbox").click();
+await expect(page.locator("#displayed-text")).toBeHidden();
+```
+
+## Selectores comunes
 
 El selector `getByLabel` selecciona los elemento usando el `label` del DOM, a este le tenemos que pasar el texto incluido entre las etiquetas para que haga la selección.
 
@@ -205,4 +213,17 @@ await page
     })
     .getByRole("button") // Aplicamos el getByRole solo sobre los resultados obtenidos del filtro
     .click();
+```
+
+## Métodos de escucha
+
+En Playwright podemos poner métodos de escucha para cuando se realizen diferentes acciones, como puede ser la descarga de un archivo, la aparición de un popup de confirmación o el cierre del navegador entre otros.
+
+Para ello tenemos que preparar el método antes de la acción que lo acontece usando el método `on` del objeto `page`
+
+```js
+// Si en algún momento se abre el popup, acepta
+page.on("dialog", async (dialog) => {
+    await dialog.accept();
+});
 ```
