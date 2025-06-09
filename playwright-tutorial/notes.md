@@ -215,6 +215,14 @@ await page
     .click();
 ```
 
+Por defecto cuando seleccionamos un elemento usando `locator` Playwright seleccionará los elementos en el DOM por lo que es posible que algunos de estos elementos no estén visibles y Playwright los estará seleccionando igualmente.
+
+Si queremos hacer un filtrado de solo los elementos que están visibles en pantalla tenemos que usar `:visible` después del selector seleccioando.
+
+```js
+await page.locator("li a[href*='lifetime-access']:visible").click();
+```
+
 ## Métodos de escucha
 
 En Playwright podemos poner métodos de escucha para cuando se realizen diferentes acciones, como puede ser la descarga de un archivo, la aparición de un popup de confirmación o el cierre del navegador entre otros.
@@ -226,4 +234,16 @@ Para ello tenemos que preparar el método antes de la acción que lo acontece us
 page.on("dialog", async (dialog) => {
     await dialog.accept();
 });
+```
+
+## iframe
+
+El objeto `page` no actua sobre elementos que se encuentren dentro de un `iframe` para ello antes tenemos que invocar un objeto `iframe` como tal usando el método `frameLocator` del objeto `page`
+
+```js
+const iframePage = page.frameLocator("#courses-iframe");
+
+await iframePage.locator("li a[href*='lifetime-access']:visible").click();
+const textCheck = await iframePage.locator(".text h2").textContent();
+console.log(textCheck.split(" ")[1]);
 ```

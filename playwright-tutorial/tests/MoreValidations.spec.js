@@ -12,6 +12,11 @@ test("More validations", async ({ page }) => {
     });
 
     await page.locator("#confirmbtn").click();
-
     await page.locator("#mousehover").hover();
+
+    const iframePage = page.frameLocator("#courses-iframe");
+
+    await iframePage.locator("li a[href*='lifetime-access']:visible").click();
+    const textCheck = await iframePage.locator(".text h2").textContent();
+    console.log(textCheck.split(" ")[1]);
 });
