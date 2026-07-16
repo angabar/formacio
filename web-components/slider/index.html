@@ -1,0 +1,16 @@
+<html>
+    <body>
+        <wcia-slider></wcia-slider>
+    </body>
+    <script>
+        class WCIASlider extends HTMLElement {
+            connectedCallback() {
+                alert("hi from the slider!");
+            }
+        }
+
+        if (!customElements.get("wcia-slider")) {
+            customElements.define("wcia-slider", WCIASlider);
+        }
+    </script>
+</html>
