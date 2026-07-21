@@ -16,6 +16,20 @@
                     `;
 
                     this.showPhoto();
+
+                    this.querySelector("button.back").addEventListener(
+                        "click",
+                        // Importante que sea una función flecha, una función normal coje el this de donde se llama, una función flecha coje el this de donde se declara
+                        (event) => {
+                            this.onBackButtonClick(event);
+                        },
+                    );
+                    this.querySelector("button.forward").addEventListener(
+                        "click",
+                        (event) => {
+                            this.onNextButtonClick(event);
+                        },
+                    );
                 }
 
                 showPhoto() {
@@ -23,6 +37,26 @@
                         ".image-container",
                     ).style.backgroundImage =
                         `url(${this._photos[this._photoIndex]})`;
+                }
+
+                onBackButtonClick(event) {
+                    this._photoIndex--;
+
+                    if (this._photoIndex < 0) {
+                        this._photoIndex = this._photos.length - 1;
+                    }
+
+                    this.showPhoto();
+                }
+
+                onNextButtonClick(event) {
+                    this._photoIndex++;
+
+                    if (this._photoIndex >= this._photos.length) {
+                        this._photoIndex = 0;
+                    }
+
+                    this.showPhoto();
                 }
             }
 
@@ -32,6 +66,7 @@
         </script>
         <style>
             wcia-photo-carousel {
+                position: relative;
                 width: 500px;
                 height: 300px;
                 display: flex;
@@ -57,12 +92,30 @@
                 background-repeat: no-repeat;
                 background-position: 50%;
             }
+
+            wcia-photo-carousel button {
+                cursor: pointer;
+                background-color: transparent;
+                border: none;
+                font-size: 48px;
+                color: white;
+                position: absolute;
+                top: 50%;
+            }
+
+            wcia-photo-carousel button.back {
+                left: 10px;
+            }
+
+            wcia-photo-carousel button.forward {
+                right: 10px;
+            }
         </style>
     </head>
     <body>
         <wcia-photo-carousel
             title="jajaja"
-            author="maricón!"
+            author="author name!"
             photos="https://picsum.photos/id/237/200/300,https://picsum.photos/id/238/200/300,https://picsum.photos/id/239/200/300,https://picsum.photos/id/240/200/300"
         ></wcia-photo-carousel>
     </body>

@@ -1,0 +1,49 @@
+<html>
+    <head>
+        <title>POst search</title>
+        <script>
+            class PostSearch extends HTMLElement {
+                connectedCallback() {
+                    this.doSearch();
+                }
+
+                async doSearch() {
+                    const url = `https://jsonplaceholder.typicode.com/posts`;
+
+                    try {
+                        const response = await fetch(url);
+                        if (!response.ok) {
+                            throw new Error(
+                                `Response status: ${response.status}`,
+                            );
+                        }
+
+                        const result = await response.json();
+                        this.renderResults(result);
+                    } catch (error) {
+                        console.error(error.message);
+                    }
+                }
+
+                renderResults(results) {
+                    let html = ``;
+
+                    results.forEach((result) => {
+                        html += `<span>${result.title}</span><hr /><br />`;
+                    });
+
+                    // Importante que el innerHTML sea llamado fuera del bucle for para no re-dibujar el árbol html múltiples veces
+                    this.innerHTML = html;
+                }
+            }
+
+            if (!customElements.get("post-search")) {
+                customElements.define("post-search", PostSearch);
+            }
+        </script>
+        <style></style>
+    </head>
+    <body>
+        <post-search></post-search>
+    </body>
+</html>
