@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>POst search</title>
+        <title>Post search</title>
         <script>
             class PostSearch extends HTMLElement {
                 // El attributeChangedCallback ya se llama inicialmente pues cualquier atributo pasa de undefined a algo, así que en este caso se puede quitar el connectedCallback
@@ -10,6 +10,13 @@
 
                 //     this.doSearch();
                 // }
+
+                connectedCallback() {
+                    if (this.hasAttribute("backgroundcolor")) {
+                        this.style.backgroundColor =
+                            this.getAttribute("backgroundcolor");
+                    }
+                }
 
                 // set userId(value) {
                 //     this._userId = value;
@@ -96,7 +103,7 @@
             <option>2</option>
             <option>3</option>
         </select>
-        <post-search userid="1"></post-search>
+        <post-search userid="1" backgroundcolor="red"></post-search>
         <script>
             // Setear atributos como se ve aquí no siempre es buena idea, ya que si usamos atributos tendremos el valor en el momento en el que el web component se monte, mientras que si hacemos uso de los set, tenemos que tener bien claro que el set y el uso de este dentro de la lógica del componente, estén sincronizados.
 
@@ -115,3 +122,41 @@
         </script>
     </body>
 </html>
+
+<!--
+
+Hay dos buenas practicas que hay que mantener en los webcomponents a partir de ahora, la primera es la que hay que evitar enviar tronchos enormes de datos y más si estos están anidados de manera recursiva a través de los atributos, y la segunda es que hay que hacer que los cambios en las propiedades tienen que verse reflejados en los atributos.
+
+Pero esto tiene un problema ya que puede hacerse de muchas formas, podemos actualizar la propiedad en base al atributo y al revés, cuidado eso si con actualizar la propiedad en el attributeChangedCallback
+
+attributeChangedCallback(name, oldVal, newVal) {
+    if (name === "test") {
+        // Hace que se llame al checked
+        this.prop = newVal;
+    }
+}
+
+set checked(newValue) {
+    if (newValue) {
+        // Hace que se llame al attributeChangedCallback
+        this.setAttribute("test", "");
+    }
+}
+
+Para centrarse en un único método de reflejos, lo ideal es usar siempre como referencia a los atributos.
+
+get prop() {
+    return this.getAttribute("prop");
+}
+
+set prop(newVal) {
+    this.setAttribute("prop", newVal);
+}
+
+attributeChangedCallback(name, oldVal, newVal) {
+    if (name === "prop") {
+        // Hacer lo que sea, menos cambiar el atributo!
+    }
+}
+
+-->
