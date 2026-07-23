@@ -3,12 +3,46 @@
         <title>POst search</title>
         <script>
             class PostSearch extends HTMLElement {
-                connectedCallback() {
-                    this.doSearch();
+                // El attributeChangedCallback ya se llama inicialmente pues cualquier atributo pasa de undefined a algo, así que en este caso se puede quitar el connectedCallback
+
+                // connectedCallback() {
+                //     // this._userId = "";
+
+                //     this.doSearch();
+                // }
+
+                // set userId(value) {
+                //     this._userId = value;
+                //     this.doSearch();
+                // }
+
+                // get userId() {
+                //     return this._userId;
+                // }
+
+                // attributeChangedCallback solo será llamado para los atributos que tengamos en escucha, es decir, los que definamos en este método, en la versión v0 de web components si que se escuchaban todos los atributos, incluso los class, pero esto era tremendamente ineficiente, por eso solo se escuchan los que se estén observando
+                static get observedAttributes() {
+                    return ["userid"];
+                }
+
+                attributeChangedCallback(name, oldVal, newVal) {
+                    // La forma que tiene este método de comprobar si un atributo a cambiado o no es comprobando su nombre en lowerCase siempre, por lo que es recomendable que todos los atributos que especifiquemos en el componente estén siempre en lowerCase
+                    if (name === "userid") {
+                        this.doSearch();
+                    }
                 }
 
                 async doSearch() {
-                    const url = `https://jsonplaceholder.typicode.com/posts`;
+                    const url = new URL(
+                        "https://jsonplaceholder.typicode.com/posts",
+                    );
+
+                    if (this.getAttribute("userid")) {
+                        url.searchParams.append(
+                            "userId",
+                            this.getAttribute("userid"),
+                        );
+                    }
 
                     try {
                         const response = await fetch(url);
@@ -29,7 +63,7 @@
                     let html = ``;
 
                     results.forEach((result) => {
-                        html += `<span>${result.title}</span><hr /><br />`;
+                        html += `<div class="single-post"><span>${result.title}</span></div>`;
                     });
 
                     // Importante que el innerHTML sea llamado fuera del bucle for para no re-dibujar el árbol html múltiples veces
@@ -41,9 +75,43 @@
                 customElements.define("post-search", PostSearch);
             }
         </script>
-        <style></style>
+        <style>
+            post-search {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 18px;
+            }
+
+            post-search .single-post {
+                border: 1px solid black;
+                width: 200px;
+                box-shadow: 5px 5px black;
+                padding: 8px;
+            }
+        </style>
     </head>
     <body>
-        <post-search></post-search>
+        <select id="user-selector" onchange="onSelectUserId(event)">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+        </select>
+        <post-search userid="1"></post-search>
+        <script>
+            // Setear atributos como se ve aquí no siempre es buena idea, ya que si usamos atributos tendremos el valor en el momento en el que el web component se monte, mientras que si hacemos uso de los set, tenemos que tener bien claro que el set y el uso de este dentro de la lógica del componente, estén sincronizados.
+
+            // document.querySelector("post-search").userId = 3;
+
+            // console.log(
+            //     'document.querySelector("post-search").userId__ ',
+            //     document.querySelector("post-search").userId,
+            // );
+
+            function onSelectUserId(event) {
+                document
+                    .querySelector("post-search")
+                    .setAttribute("userid", event.target.value);
+            }
+        </script>
     </body>
 </html>
