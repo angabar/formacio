@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <title>My custom tag</title>
+        <script>
+            class MyCustomTag extends HTMLElement {
+                // El constructor es la funcion llamada cuando se instancia la clase, y connectedCallback cuando el componente se monta en el DOM, para que el contructor de la clase padre sea llamada también tenemos que invocar super(), podemos lanzar métodos de la clase padre (HTMLElement) con super.myMethod()
+
+                // Nota importante: connectedCallback solo sera llamado si se añade el web component a un elemento que esté en el DOM, si creamos un "div" sin añadirlo al DOM y después introducimos el web component en este, connectedCallback no se llamara
+                constructor() {
+                    super();
+
+                    alert("hello from cosntructor");
+                }
+
+                connectedCallback() {
+                    alert("hello from connectedCallback");
+
+                    this.innerHTML = `<h2>${this.getAttribute("title")}</h2>
+                                      <button>Click me</button>`;
+                }
+            }
+
+            if (!customElements.get("my-custom-tag")) {
+                customElements.define("my-custom-tag", MyCustomTag);
+            }
+        </script>
+        <style>
+            my-custom-tag {
+                background-color: blue;
+                padding: 20px;
+                display: inline-block;
+                color: white;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- <my-custom-tag title="My custom title"></my-custom-tag> -->
+    </body>
+</html>
