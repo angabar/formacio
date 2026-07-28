@@ -3,20 +3,48 @@
         <title>My custom tag</title>
         <script>
             class MyCustomTag extends HTMLElement {
-                // El constructor es la funcion llamada cuando se instancia la clase, y connectedCallback cuando el componente se monta en el DOM, para que el contructor de la clase padre sea llamada también tenemos que invocar super(), podemos lanzar métodos de la clase padre (HTMLElement) con super.myMethod()
+                // El constructor es la funcion llamada cuando se instancia la
+                // clase, y connectedCallback cuando el componente se monta en
+                // el DOM, para que el contructor de la clase padre sea llamada
+                // también tenemos que invocar super(), podemos lanzar métodos
+                // de la clase padre (HTMLElement) con super.myMethod()
 
-                // Nota importante: connectedCallback solo sera llamado si se añade el web component a un elemento que esté en el DOM, si creamos un "div" sin añadirlo al DOM y después introducimos el web component en este, connectedCallback no se llamara
+                // Nota importante: connectedCallback solo sera llamado si se
+                // añade el web component a un elemento que esté en el DOM, si
+                // creamos un "div" sin añadirlo al DOM y después introducimos
+                // el web component en este, connectedCallback no se llamara,
+                // mientras que el constructor sera llamado al instanciar la
+                // clase, document.createElement("my-custom-tag")
                 constructor() {
                     super();
 
                     alert("hello from cosntructor");
                 }
 
+                // La diferencia esencial entre connectedCallback y constructor
+                // es que connectedCallback puede trabajar con el elemento HTML
+                // en si, crear eventListenners, acceder a atributos, etc,
+                // mientras que el constructor a de basarse solo en lógica que
+                // no dependa del HTML como tal, como por ejemplo, llamadas al
+                // backend, esto no pasara así con el shadowDOM, donde si
+                // tendremos acceso al HTML en el constructor, pero lo veremos
+                // más adelante
                 connectedCallback() {
                     alert("hello from connectedCallback");
 
                     this.innerHTML = `<h2>${this.getAttribute("title")}</h2>
                                       <button>Click me</button>`;
+                }
+
+                adoptedCallback() {
+                    // Este método se lanza cuando un web componente pasa de un
+                    // árbol HTML a otro, normalmente de un HTML a un iframe, es
+                    // un caso extremadamente raro de usar
+                }
+
+                disconnectedCallback() {
+                    // Este método se lanza cuando el componente se elimina,
+                    // últil para eliminar listenners y timers
                 }
             }
 
