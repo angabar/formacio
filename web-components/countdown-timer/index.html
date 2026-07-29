@@ -1,0 +1,71 @@
+<html>
+    <head>
+        <title>Visual countdown timer</title>
+        <script>
+            class VisualCountdownTimer extends HTMLElement {
+                connectedCallback() {
+                    this.timer = 200;
+                    this.style.backgroundColor = "green";
+                    this.style.display = "inline-block";
+                    this.style.height = "50px";
+
+                    requestAnimationFrame(() => this.update());
+                }
+
+                update() {
+                    this.timer--;
+
+                    if (this.timer <= 0) {
+                        this.timer = 200;
+                    }
+
+                    this.style.width = `${this.timer}px`;
+
+                    requestAnimationFrame(() => this.update());
+                }
+            }
+
+            if (!customElements.get("countdown-timer")) {
+                customElements.define("countdown-timer", VisualCountdownTimer);
+            }
+        </script>
+    </head>
+    <body>
+        <countdown-timer></countdown-timer>
+    </body>
+</html>
+
+<!--
+
+Imaginemos que queremos la funcionalidad de la animación en todos los
+componentes que heredemos para no tener que escribirlo una y otra vez
+
+En este caso implementamos la clase padre tal que así
+
+class AnimationBase extends HTMLElement { constructor() { super();
+
+        this.onUpdate();
+    }
+
+    // Lo dejamos vacío para que el heredero lo sobre-escriba
+    update() {}
+
+    // Sino usamos este método intermedio y ponemos toda la lógica en el propio update, el usuario se lo cargará cuando invoque a update y estará obligado a llamar a super.update()
+    onUpdate() {
+        this.update();
+        requestAnimationFrame(() => this.onUpdate());
+    }
+}
+
+// En la clase hijo escribimos el update tal cual
+
+class AnimationHeir extends AnimationBase { update() {
+        ...
+    }
+}
+
+Lo que hacemos así es invocar onUpdate que llama indirectamente a update, si
+prescindieramos de esta función, tendriamos que llamar obligatoriamente a
+super.update() para inicializar el proceso de la animación
+
+-->
