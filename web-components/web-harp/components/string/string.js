@@ -1,5 +1,7 @@
 export default class WebHarpString extends HTMLElement {
-    strum(params) {}
+    strum(params) {
+        console.log("params", params);
+    }
 
     stopStrum() {}
 

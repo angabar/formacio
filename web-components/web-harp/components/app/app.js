@@ -4,13 +4,13 @@ export default class WebHarpApp extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `<web-harp-strings strings="${this.getAttribute("strings")}"></web-harp-strings>`;
 
-        this.stringsElement = this.querySelectorAll("web-harp-strings");
+        this.stringsElements = this.querySelector("web-harp-strings");
 
         this.addEventListener("mousemove", (event) => this.onMouseMove(event));
     }
 
     onMouseMove(event) {
-        this.stringsElement.points = {
+        this.stringsElements.points = {
             last: this.lastPoint,
             current: { x: event.pageX, y: event.pageY },
         };
