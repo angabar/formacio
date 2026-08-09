@@ -27,7 +27,6 @@ export default class WebHarpStrings extends HTMLElement {
     }
 
     set points(points) {
-        console.log("points__ ", points);
         if (!this.stringElements) {
             return;
         }
