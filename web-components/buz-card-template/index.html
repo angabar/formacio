@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <title>Buz card</title>
+        <script type="module" src="./buz-card.js"></script>
+    </head>
+    <body>
+        <label for="label-selector">Variety selector</label>
+        <select id="label-selector">
+            <option value="none">Ninguno</option>
+            <option value="variation-a">Variación A</option>
+        </select>
+
+        <template id="none">
+            <div>None</div>
+        </template>
+
+        <template id="variation-a">
+            <div>Variation A</div>
+        </template>
+
+        <buz-card title="title" subtitle="my subtitle"></buz-card>
+
+        <script>
+            const idSelector = document
+                .getElementById("label-selector")
+                .addEventListener("change", (event) => {
+                    document
+                        .querySelector("buz-card")
+                        .setAttribute("layout", event.target.value);
+                });
+        </script>
+    </body>
+</html>
