@@ -2,14 +2,22 @@ import template from "./template.js";
 
 class BuzCard extends HTMLElement {
     connectedCallback() {
-        this.innerHTML = template.render({
-            title: this.getAttribute("title"),
-            subtitle: this.getAttribute("subtitle"),
+        this.root = this.attachShadow({ mode: "open" });
+
+        this.cardElement = document.createElement("div");
+        this.templates = document.createElement("div");
+        this.root.appendChild(this.cardElement);
+        this.root.appendChild(this.templates);
+
+        // Con este método podemos cargar los templates de un HTML externo y de
+        // este modo no tenerlo todo en compañia del web component
+        const request = new XMLHttpRequest();
+        request.open("GET", "templates.html", true);
+        request.addEventListener("load", (event) => {
+            this.templates.innerHTML = event.target.response;
+            this.populateCard();
         });
-
-        this.dom = template.mapDOM(this);
-
-        this.dom.title.style.backgroundColor = "red";
+        request.send();
     }
 
     static get observedAttributes() {
@@ -17,13 +25,20 @@ class BuzCard extends HTMLElement {
     }
 
     attributeChangedCallback(name, oldVal, newVal) {
-        this.innerHTML = "";
+        if (name === "layout" && this.templates) {
+            this.populateCard();
+        }
+    }
 
-        const template = document.getElementById(newVal);
+    populateCard() {
+        const template = this.templates.querySelector(
+            `template.${this.getAttribute("layout")}`,
+        );
 
         if (template) {
             const clone = template.content.cloneNode(true);
-            this.appendChild(clone);
+            this.cardElement.innerHTML = "";
+            this.cardElement.appendChild(clone);
         }
     }
 }
