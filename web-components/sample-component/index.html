@@ -1,0 +1,91 @@
+<html>
+    <head>
+        <title>Sample component</title>
+        <!-- Cuando tenemos un componente usando el shadowDOM no podemos usar la
+        clase del componente (en este ejemplo sample-component) para hacer
+        referencia a los estilos del propio componente ya que el shadowDOM está
+        dentro de este, por contra tenemos que usar :host -->
+
+        <!-- Otro aspecto a tener en cuenta, es que los estilos que protegemos
+        con shadowDOM son aquellos que puedan sobre-escribirse con selectores
+        globales, como button o span pero no de los estilos definidos
+        globalmente, como los que podemos definir en la etiqueta body -->
+        <style>
+            body {
+                font-size: 50px;
+                font-weight: bold;
+            }
+
+            button {
+                border-top: 1px solid #96d1f8;
+                background: #65a9d7;
+                background: linear-gradient(90deg, #3e779d, #65a9d7);
+                padding: 5px 10px;
+                border-radius: 8px;
+                color: white;
+                font-size: 14px;
+                font-family: Helvetica;
+                text-decoration: none;
+            }
+        </style>
+        <script>
+            class SampleComponent extends HTMLElement {
+                connectedCallback() {
+                    const root = this.attachShadow({ mode: "open" });
+
+                    root.innerHTML = `
+                        <button class="big-button">-</button>
+                        <span class="increment-number">5</span>
+                        <button class="big-button">+</button>
+                        <style>
+                            :host {
+                                display: flex;
+                            }
+
+                            span {
+                                font-size: 24px;
+                                background-color: #770311;
+                                color: white;
+                                font-family: Helvetica;
+                                display: inline-block;
+                                padding: 11px;
+                                border: none;
+                            }
+
+                            button {
+                                border-radius: 0 50px 50px 0;
+                                border: none;
+                                width: 50px;
+                                height: 50px;
+                                font-size: 36px;
+                                font-weight: bold;
+                                background-color: red;
+                                color: white;
+                            }
+
+                            button:first-child {
+                                border-radius: 50px 0 0 50px;
+                            }
+
+                            .big-button:active {
+                                background-color: #960000;
+                            }
+
+                            .big-button:focus {
+                                outline: this dotted;
+                            }
+                        </style>
+                    `;
+                }
+            }
+
+            if (!customElements.get("sample-component")) {
+                customElements.define("sample-component", SampleComponent);
+            }
+        </script>
+    </head>
+    <body>
+        <sample-component></sample-component>
+        <button>An ordinary button</button>
+    </body>
+</html>
