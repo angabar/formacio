@@ -33,6 +33,17 @@
                 connectedCallback() {
                     const root = this.attachShadow({ mode: "open" });
 
+                    // El shadowDOM protege al componente de las clases y
+                    // selectores externos, pero no de aquellas propiedades que
+                    // puedan heredarse de manera automática sin necesidad de
+                    // selectores o clases, como por ejemplo asignar al body un
+                    // font-size de 30px, este font-size irá a todos los
+                    // descendientes de body queramos o no, incluso si el
+                    // componente usa shadowDOM
+
+                    // Una forma de evitar esto es usando all: initial dentro
+                    // del selector :host, de esa forma reseteamos todas las
+                    // propiedades heredables en nuestro componente
                     root.innerHTML = `
                         <button class="big-button">-</button>
                         <span class="increment-number">5</span>
@@ -40,6 +51,7 @@
                         <style>
                             :host {
                                 display: flex;
+                                all: initial;
                             }
 
                             span {
