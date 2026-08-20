@@ -1,8 +1,8 @@
 export default {
     mapDOM(scope) {
         return {
-            thumb: scope.querySelector(".thumb"),
-            bgOverlay: scope.querySelector(".bg-overlay"),
+            thumb: scope.getElementById("thumb"),
+            bgOverlay: scope.getElementById("bg-overlay"),
         };
     },
     render(props) {
@@ -12,12 +12,12 @@ export default {
         `;
     },
     html(props) {
-        return `<div class='bg-overlay'></div><div class='thumb'></div>`;
+        return `<div id='bg-overlay'></div><div id='thumb'></div>`;
     },
     css(props) {
         return `
             <style>
-                wcia-slider {
+                :host {
                     display: inline-block;
                     position: relative;
                     border-radius: 3px;
@@ -25,7 +25,7 @@ export default {
                     width: 400px;
                 }
 
-                .bg-overlay {
+                #bg-overlay {
                     width: 100%;
                     height: 100%;
                     position: absolute;
@@ -33,7 +33,7 @@ export default {
                     background-color: red;
                 }
 
-                .thumb {
+                #thumb {
                     margin-top: -1px;
                     width: 5px;
                     height: calc(100% - 5px);

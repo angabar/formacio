@@ -3,17 +3,25 @@ import template from "./template.js";
 class WCIASlider extends HTMLElement {
     #isDragging = false;
 
-    connectedCallback() {
-        this.innerHTML = template.render();
+    constructor() {
+        super();
 
-        this.dom = template.mapDOM(this);
+        this.attachShadow({ mode: "open" });
+
+        this.shadowRoot.innerHTML = template.render();
+
+        this.dom = template.mapDOM(this.shadowRoot);
 
         // Tenemos que llamar a estos métodos porque sino no se setearán los
         // valores la primera vez, ya que aunque attributeChangedCallback
         // también se llama al inicio, cuando lo hace, los componentes aún no
         // han cargado, mientras que en el connectedCallback si
-        this.setColor(this.backgroundcolor);
-        this.refreshSlider(this.value);
+
+        // Estos métodos ya no se llaman porque con el shadowDOM este problema
+        // ya no existe
+
+        // this.setColor(this.backgroundcolor);
+        // this.refreshSlider(this.value);
 
         // Para inicializar el movimiento tenemos que hacer click en el slider,
         // pero para moverlo o soltarlo podemos estar fuera, por eso el
