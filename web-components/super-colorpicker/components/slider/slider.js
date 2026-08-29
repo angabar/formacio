@@ -26,7 +26,7 @@ class WCIASlider extends HTMLElement {
         return ["value", "backgroundcolor"];
     }
 
-    attributeChangedCallback(name, oldVal, newVal) {
+    attributeChangedCallback(name, _, newVal) {
         switch (name) {
             case "value":
                 this.refreshSlider(newVal);

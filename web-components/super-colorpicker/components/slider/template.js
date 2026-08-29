@@ -30,7 +30,6 @@ export default {
                     height: 100%;
                     position: absolute;
                     border-radius: 3px;
-                    background-color: red;
                 }
 
                 #thumb {

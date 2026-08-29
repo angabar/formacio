@@ -1,6 +1,6 @@
 import Template from "./template.js";
 
-export class CoordPicker extends HTMLElement {
+export default class CoordPicker extends HTMLElement {
     constructor() {
         super();
 
