@@ -7,7 +7,6 @@ class WCIASlider extends HTMLElement {
         super();
 
         this.attachShadow({ mode: "open" });
-
         this.shadowRoot.innerHTML = template.render();
 
         this.dom = template.mapDOM(this.shadowRoot);
