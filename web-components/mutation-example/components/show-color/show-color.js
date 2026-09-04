@@ -9,6 +9,18 @@ export default class ShowColor extends HTMLElement {
             data: null,
             scope: this,
         });
+
+        this.dom = template.mapDOM(this.shadowRoot);
+    }
+
+    static get observedAttributes() {
+        return ["colorbakground"];
+    }
+
+    attributeChangedCallback(name, _, newVal) {
+        if (name === "colorbakground") {
+            this.dom.colorTemplateComponent.style.backgroundColor = newVal;
+        }
     }
 
     get colorBackground() {
