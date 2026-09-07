@@ -1,3 +1,5 @@
+import base from "../../styles.js";
+
 export default {
     mapDOM(scope) {
         return {
@@ -23,6 +25,7 @@ export default {
                 :host {
                     display: inline-block;
                     position: relative;
+                    ${base.normal()}
                 }
 
                 #bg-overlay-a {

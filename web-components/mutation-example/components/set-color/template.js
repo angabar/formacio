@@ -18,6 +18,9 @@ export default {
     css(props) {
         return `
             <style>
+                #roll-button {
+                    font-size: var(--my-font-size);
+                }
             </style>
         `;
     },
