@@ -7,7 +7,7 @@ export default {
     },
     mapDOM(dom) {
         return {
-            rollButton: dom.getElementById("roll-button"),
+            rollButton: dom.querySelector("#roll-button"),
         };
     },
     html(props) {

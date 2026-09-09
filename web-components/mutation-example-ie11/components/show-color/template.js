@@ -7,7 +7,7 @@ export default {
     },
     mapDOM(scope) {
         return {
-            colorTemplateComponent: scope.getElementById("color-template"),
+            colorTemplateComponent: scope.querySelector("#color-template"),
         };
     },
     html(props) {
@@ -19,17 +19,15 @@ export default {
         return `
             <style>
                 :host {
+                }
+
+                #color-template {
                     display: flex;
                     height: 200px;
                     width: 200px;
                     border: 1px solid #383333d3;
                     border-radius: 8px;
                     margin-top: 20px;
-                }
-
-                #color-template {
-                    width: 100%;
-                    height: 100%;
                 }
             </style>
         `;

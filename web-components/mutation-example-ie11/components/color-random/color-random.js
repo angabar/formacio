@@ -28,7 +28,7 @@ export default class ColorRandom extends HTMLElement {
             this.observer = new MutationObserver((event) =>
                 this.onMutationChange(event),
             );
-            this.observer.observe(this.shadowRoot, {
+            this.observer.observe(this.root, {
                 attributes: true,
                 subtree: true,
             });
