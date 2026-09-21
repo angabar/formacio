@@ -2,6 +2,7 @@ import { LitElement, html } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { increment, store } from "./redux/store";
 import type { Unsubscribe } from "@reduxjs/toolkit";
+import type { QueryActionCreatorResult } from "@reduxjs/toolkit/query";
 import { api } from "./api/api";
 
 @customElement("my-element")
@@ -9,7 +10,9 @@ export class MyElement extends LitElement {
     @state()
     ubsuscribe?: Unsubscribe;
     @state()
-    querySubscription?: unknown;
+    querySubscription?: QueryActionCreatorResult<
+        typeof api.endpoints.getUser.Types.QueryDefinition
+    >;
 
     connectedCallback() {
         super.connectedCallback();
@@ -61,6 +64,6 @@ export class MyElement extends LitElement {
             return html`<p>Sin datos</p>`;
         }
 
-        return html`<span>${result.data.name}</span>`;
+        return html`<span>${false ? "jajaja" : null}${result.data.name}</span>`;
     }
 }
