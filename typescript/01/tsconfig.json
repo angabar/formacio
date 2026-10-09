@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "es2016",
+        "module": "commonjs",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
+        // noEmit -> Evita que se transpile el código, solo checkeo de tipos,
+        // para cuando ya tenemos una herramienta que lo transpila como Vite
+    }
+}
