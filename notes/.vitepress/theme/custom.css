@@ -1,0 +1,5 @@
+.vp-doc div[class*="language-"] pre,
+.vp-doc div[class*="language-"] code {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
