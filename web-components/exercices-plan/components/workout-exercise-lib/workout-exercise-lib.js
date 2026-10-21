@@ -1,4 +1,5 @@
 import Template from "./template.js";
+import exercices from "../../data/exercices.js";
 
 class WorkoutExerciseLib extends HTMLElement {
     constructor() {
@@ -6,53 +7,7 @@ class WorkoutExerciseLib extends HTMLElement {
 
         this.attachShadow({ mode: "open" });
         this.shadowRoot.innerHTML = Template.render({
-            exercises: [
-                {
-                    label: "Jump Rope",
-                    type: "cardio",
-                    thumb: "",
-                    time: 300,
-                    sets: 1,
-                },
-                {
-                    label: "Jog",
-                    type: "cardio",
-                    thumb: "",
-                    time: 300,
-                    sets: 1,
-                },
-                {
-                    label: "Pushups",
-                    type: "strength",
-                    thumb: "",
-                    count: 5,
-                    sets: 2,
-                    estimatedTimePerCount: 5,
-                },
-                {
-                    label: "Pullups",
-                    type: "strength",
-                    thumb: "",
-                    count: 5,
-                    sets: 2,
-                    estimatedTimePerCount: 5,
-                },
-                {
-                    label: "Chin ups",
-                    type: "strength",
-                    thumb: "",
-                    count: 5,
-                    sets: 2,
-                    estimatedTimePerCount: 5,
-                },
-                {
-                    label: "Plank",
-                    type: "strength",
-                    thumb: "",
-                    time: 60,
-                    sets: 1,
-                },
-            ],
+            exercises: exercices.all,
         });
     }
 }
